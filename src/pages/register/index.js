@@ -13,6 +13,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment"; // choose your lib
 import * as Yup from "yup";
 
+import { getUser } from "../../services/graphql";
+
 const validate = () => {
   return Yup.object().shape({
     name: Yup.string()
@@ -52,6 +54,8 @@ const Register = () => {
     repeatPassword: "",
   };
 
+  // retorno do Graphql
+  console.log(getUser(2));
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Card className={styles.form}>
@@ -92,6 +96,11 @@ const Register = () => {
                   <Grid className={styles.textField}>
                     <Button variant="contained" color="primary" disabled={isSubmitting} onClick={submitForm} fullWidth>
                       Cadastrar
+                    </Button>
+                  </Grid>
+                  <Grid className={styles.textField}>
+                    <Button variant="contained" color="secondary" fullWidth>
+                      Login
                     </Button>
                   </Grid>
                 </form>

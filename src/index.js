@@ -1,19 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
-
-const httpLink = new HttpLink({ uri: 'http://127.0.0.1:3333/graphql' })
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 
 const client = new ApolloClient({
-    link: httpLink,
-    cache: new InMemoryCache(),
-})
+  uri: "http://127.0.0.1:3333/graphql",
+});
 
 ReactDOM.render(
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>,
-    document.getElementById('root'),
-)
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById("root")
+);
