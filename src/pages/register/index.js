@@ -13,7 +13,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment"; // choose your lib
 import * as Yup from "yup";
 
-import { getUser } from "../../services/graphql";
+import { ADD_USER } from "../../services/graphql";
+import { useMutation } from "@apollo/react-hooks";
 
 const validate = () => {
   return Yup.object().shape({
@@ -22,7 +23,7 @@ const validate = () => {
       .max(50, "Nome deve ter no máximo 50 caracteres.")
       .required("Nome deve ser informado."),
     email: Yup.string().email("Email invalido.").required("Email deve ser informado."),
-    dateOfBirth: Yup.date()
+    date_of_birth: Yup.date()
       .max(moment().subtract(18, "years"), "Você deve ter no mínimo 18 anos.")
       .required("Data deve ser informada"),
     password: Yup.string()
@@ -32,16 +33,8 @@ const validate = () => {
     repeatPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "As senhas devem corresponder")
       .min(6, "Senha deve ter no mínimo 6 caracteres.")
-      .required("Senha deve ser informada"),
+      .required("Senha deve ser informada")
   });
-};
-
-const onSubmit = (values, { setSubmitting }) => {
-  console.log(values);
-  setTimeout(() => {
-    setSubmitting(false);
-    alert(JSON.stringify(values, null, 2));
-  }, 500);
 };
 
 const Register = () => {
@@ -49,19 +42,39 @@ const Register = () => {
   const state = {
     name: "",
     email: "",
-    dateOfBirth: new Date(moment().subtract(18, "years")),
+    date_of_birth: new Date(moment().subtract(18, "years")),
     password: "",
-    repeatPassword: "",
+    repeatPassword: ""
   };
+  const [createUser] = useMutation(ADD_USER);
 
-  // retorno do Graphql
-  console.log(getUser(2));
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Card className={styles.form}>
         <CardContent>
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Formik initialValues={state} validationSchema={validate} onSubmit={onSubmit}>
+            <Formik
+              initialValues={state}
+              validationSchema={validate}
+              onSubmit={async (values, { setSubmitting }) => {
+                await createUser({
+                  variables: {
+                    name: values.name,
+                    email: values.email,
+                    date_of_birth: moment(values.date_of_birth).format("DD/MM/YYYY"),
+                    password: values.password
+                  }
+                })
+                  .then(response => {
+                    alert("Sucesso");
+                    console.log("Sucesso", response);
+                  })
+                  .catch(error => {
+                    alert("Erro ao cadastrar: " + error);
+                    console.log("Erro = ", error);
+                  });
+              }}
+            >
               {({ submitForm, isSubmitting }) => (
                 <form>
                   <Grid className={styles.textField}>
@@ -73,7 +86,7 @@ const Register = () => {
                   <Grid className={styles.textField}>
                     <Field
                       component={DatePicker}
-                      name="dateOfBirth"
+                      name="date_of_birth"
                       label="Data de nascimento"
                       format="LL"
                       maxDate={new Date(moment().subtract(18, "years"))}
@@ -116,16 +129,16 @@ const Register = () => {
 const useStyles = makeStyles({
   form: {
     marginTop: "10%",
-    width: 300,
+    width: 300
   },
   textField: {
-    marginBottom: 5,
+    marginBottom: 5
   },
   inputDate: {
     backgroundColor: "rgba(0, 0, 0, 0.09)",
     marginBottom: 5,
     textIndent: 10,
-    paddingLeft: 10,
-  },
+    paddingLeft: 10
+  }
 });
 export default Register;
