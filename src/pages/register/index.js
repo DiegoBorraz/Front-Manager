@@ -12,9 +12,7 @@ import { DatePicker } from "formik-material-ui-pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment"; // choose your lib
 import * as Yup from "yup";
-
-import { ADD_USER } from "../../services/graphql";
-import { useMutation } from "@apollo/react-hooks";
+import { register } from "../../services/User";
 
 const validate = () => {
   return Yup.object().shape({
@@ -46,7 +44,6 @@ const Register = () => {
     password: "",
     repeatPassword: ""
   };
-  const [createUser] = useMutation(ADD_USER);
 
   return (
     <Grid container direction="row" justify="center" alignItems="center">
@@ -57,21 +54,18 @@ const Register = () => {
               initialValues={state}
               validationSchema={validate}
               onSubmit={async (values, { setSubmitting }) => {
-                await createUser({
-                  variables: {
-                    name: values.name,
-                    email: values.email,
-                    date_of_birth: moment(values.date_of_birth).format("DD/MM/YYYY"),
-                    password: values.password
-                  }
+                register({
+                  name: values.name,
+                  email: values.email,
+                  date_of_birth: moment(values.date_of_birth).format("DD/MM/YYYY"),
+                  password: values.password
                 })
                   .then(response => {
-                    alert("Sucesso");
-                    console.log("Sucesso", response);
+                    alert("Usuario cadastrado com sucesso!: ");
+                    window.location.pathname = "/login";
                   })
                   .catch(error => {
-                    alert("Erro ao cadastrar: " + error);
-                    console.log("Erro = ", error);
+                    alert(error.response.data);
                   });
               }}
             >
@@ -112,7 +106,12 @@ const Register = () => {
                     </Button>
                   </Grid>
                   <Grid className={styles.textField}>
-                    <Button variant="contained" color="secondary" fullWidth>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      onClick={() => (window.location.pathname = "/login")}
+                    >
                       Login
                     </Button>
                   </Grid>

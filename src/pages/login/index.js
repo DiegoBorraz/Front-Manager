@@ -7,12 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-
-import { LOGIN } from "../../services/graphql";
-import { useMutation } from "@apollo/react-hooks";
-import { errorHandling } from "../../services/graphql/ErrorHandling";
-
 import "moment/locale/pt-br";
+import { login } from "../../services/User";
 
 const validate = () => {
   return Yup.object().shape({
@@ -31,8 +27,6 @@ const Login = () => {
     password: ""
   };
 
-  const [login] = useMutation(LOGIN);
-
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Card className={styles.form}>
@@ -41,19 +35,15 @@ const Login = () => {
             initialValues={state}
             validationSchema={validate}
             onSubmit={async (values, { setSubmitting }) => {
-              await login({
-                variables: {
-                  email: values.email,
-                  password: values.password
-                }
+              login({
+                email: values.email,
+                password: values.password
               })
                 .then(response => {
-                  console.log(response.data.login);
-                  window.localStorage.setItem("token", response.data.login);
-                  alert("Sucesso");
+                  console.log("FRONT: ", response);
                 })
                 .catch(error => {
-                  alert(errorHandling(error));
+                  console.log("FRONT ERRO: ", error);
                 });
             }}
           >
@@ -68,6 +58,16 @@ const Login = () => {
                 <Grid className={styles.textField}>
                   <Button variant="contained" color="primary" disabled={isSubmitting} onClick={submitForm} fullWidth>
                     Login
+                  </Button>
+                </Grid>
+                <Grid className={styles.textField}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => (window.location.pathname = "/register")}
+                  >
+                    Registrar
                   </Button>
                 </Grid>
               </form>
