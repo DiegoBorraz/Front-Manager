@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./services/Auth";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Dashboard from "./pages/dashboard";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -22,6 +23,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
+      <Route exact path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/" component={() => <h1>Esta Logado</h1>} />
     </Switch>
   </BrowserRouter>

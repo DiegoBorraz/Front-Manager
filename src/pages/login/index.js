@@ -9,6 +9,8 @@ import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import "moment/locale/pt-br";
 import { login } from "../../services/User";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const validate = () => {
   return Yup.object().shape({
@@ -22,6 +24,8 @@ const validate = () => {
 
 const Login = () => {
   const styles = useStyles();
+  let history = useHistory();
+  const dispatch = useDispatch();
   const state = {
     email: "",
     password: ""
@@ -41,6 +45,8 @@ const Login = () => {
               })
                 .then(response => {
                   console.log("FRONT: ", response);
+                  dispatch({ type: "ADD_USER", user: response.user });
+                  history.push("/dashboard");
                 })
                 .catch(error => {
                   console.log("FRONT ERRO: ", error);
