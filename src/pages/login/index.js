@@ -45,7 +45,7 @@ const Login = () => {
               })
                 .then(response => {
                   console.log("FRONT: ", response);
-                  dispatch({ type: "ADD_USER", user: response.user });
+                  dispatch({ type: "LOGIN", user: response.user });
                   history.push("/dashboard");
                 })
                 .catch(error => {

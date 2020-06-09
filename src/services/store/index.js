@@ -1,20 +1,13 @@
 import { createStore } from "redux";
+import { combineReducers } from "redux";
+import user from "./reducer/User";
+import teste from "./reducer/Teste";
 
-const ADD_USER = "ADD_USER";
+const rootReducer = combineReducers({
+  userLogged: user,
+  teste
+});
 
-const INITIAL_STATE = {
-  user: {}
-};
-
-function courses(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case ADD_USER:
-      return { ...state, user: action.user };
-    default:
-      return state;
-  }
-}
-
-const store = createStore(courses);
+const store = createStore(rootReducer);
 
 export default store;
