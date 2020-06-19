@@ -10,7 +10,8 @@ import * as Yup from "yup";
 import "moment/locale/pt-br";
 import { login } from "../../services/User";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actionLogin } from "../../redux/actions/UserActions";
 
 const validate = () => {
   return Yup.object().shape({
@@ -26,6 +27,7 @@ const Login = () => {
   const styles = useStyles();
   let history = useHistory();
   const dispatch = useDispatch();
+  const teste = useSelector(state => state);
   const state = {
     email: "",
     password: ""
@@ -39,18 +41,24 @@ const Login = () => {
             initialValues={state}
             validationSchema={validate}
             onSubmit={async (values, { setSubmitting }) => {
-              login({
-                email: values.email,
-                password: values.password
-              })
-                .then(response => {
-                  console.log("FRONT: ", response);
-                  dispatch({ type: "LOGIN", user: response.user });
-                  history.push("/dashboard");
+              dispatch(
+                actionLogin({
+                  email: values.email,
+                  password: values.password
                 })
-                .catch(error => {
-                  console.log("FRONT ERRO: ", error);
-                });
+              );
+              // login({
+              //   email: values.email,
+              //   password: values.password
+              // })
+              //   .then(response => {
+              //     console.log("FRONT: ", response);
+              //     dispatch({ type: "LOGIN", user: response.user });
+              //     history.push("/dashboard");
+              //   })
+              //   .catch(error => {
+              //     console.log("FRONT ERRO: ", error);
+              //   });
             }}
           >
             {({ submitForm, isSubmitting }) => (

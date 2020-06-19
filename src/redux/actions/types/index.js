@@ -1,5 +1,6 @@
 export const types = {
   INCREMENT: "INCREMENT",
   INCREMENT_ASYNC: "INCREMENT_ASYNC",
-  TESTE: "TESTE"
+  TESTE: "TESTE",
+  LOGIN: "LOGIN"
 };
