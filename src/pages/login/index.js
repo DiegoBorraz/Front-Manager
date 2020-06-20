@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
@@ -8,10 +8,9 @@ import Button from "@material-ui/core/Button";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import "moment/locale/pt-br";
-import { login } from "../../services/User";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { actionLogin } from "../../redux/actions/UserActions";
+import { actionLoginAsync } from "../../redux/actions/UserActions";
 
 const validate = () => {
   return Yup.object().shape({
@@ -33,6 +32,10 @@ const Login = () => {
     password: ""
   };
 
+  useEffect(() => {
+    console.log("STATE ==== ", teste);
+  });
+
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Card className={styles.form}>
@@ -42,23 +45,11 @@ const Login = () => {
             validationSchema={validate}
             onSubmit={async (values, { setSubmitting }) => {
               dispatch(
-                actionLogin({
+                actionLoginAsync({
                   email: values.email,
                   password: values.password
                 })
               );
-              // login({
-              //   email: values.email,
-              //   password: values.password
-              // })
-              //   .then(response => {
-              //     console.log("FRONT: ", response);
-              //     dispatch({ type: "LOGIN", user: response.user });
-              //     history.push("/dashboard");
-              //   })
-              //   .catch(error => {
-              //     console.log("FRONT ERRO: ", error);
-              //   });
             }}
           >
             {({ submitForm, isSubmitting }) => (

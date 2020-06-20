@@ -1,22 +1,20 @@
 import React from "react";
 
-import { actions } from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
-  const dispatch = useDispatch();
   const counter = useSelector(state => state);
 
   console.log(counter);
   return (
     <div>
-      <p>Clique: {counter.contador} times!</p>
+      <p>Clique: {counter.user} times!</p>
       <br />
-      <p>TESTE = {counter.mensagem}</p>
+      <p>TESTE = {counter.permission}</p>
       <button
         onClick={() => {
-          dispatch(actions.incrementAsync);
-          dispatch(actions.testeAsync);
+          // dispatch(actions.incrementAsync);
+          // dispatch(actions.testeAsync);
         }}
       >
         Incremento asincrono
