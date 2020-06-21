@@ -1,9 +1,9 @@
-import axios from "axios";
+import api from "./api";
 
 export async function login(data) {
-  return await axios.post("http://127.0.0.1:3333/login", data);
+  return await api.post("login", data);
 }
 
 export async function register(data) {
-  return await axios.post("http://127.0.0.1:3333/register", data);
+  return await api.post("/register", data);
 }

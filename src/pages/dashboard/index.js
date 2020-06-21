@@ -3,14 +3,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function Dashboard() {
-  const counter = useSelector(state => state);
+  const {
+    userLoged: { user, permission }
+  } = useSelector(state => state);
 
-  console.log(counter);
+  console.log(user);
+  console.log(permission);
   return (
     <div>
-      <p>Clique: {counter.user} times!</p>
+      <h1>OLA!</h1>
+      <p>Bem vindo: {user.name} times!</p>
       <br />
-      <p>TESTE = {counter.permission}</p>
+      <p>email: {user.email}</p> *
       <button
         onClick={() => {
           // dispatch(actions.incrementAsync);

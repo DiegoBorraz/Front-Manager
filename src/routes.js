@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import { isAuthenticated } from "./services/Auth";
 import Login from "./pages/login";
 import Register from "./pages/register";
@@ -19,14 +21,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const Routes = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/register" component={Register} />
-      <Route exact path="/dashboard" component={Dashboard} />
-      <PrivateRoute path="/" component={() => <h1>Esta Logado</h1>} />
-    </Switch>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
+      </Switch>
+    </BrowserRouter>
+  </Provider>
 );
 
 export default Routes;

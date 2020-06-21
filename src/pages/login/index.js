@@ -11,6 +11,7 @@ import "moment/locale/pt-br";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actionLoginAsync } from "../../redux/actions/UserActions";
+import { isAuthenticated } from "../../services/Auth";
 
 const validate = () => {
   return Yup.object().shape({
@@ -27,13 +28,16 @@ const Login = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const teste = useSelector(state => state);
+
   const state = {
     email: "",
     password: ""
   };
 
   useEffect(() => {
-    console.log("STATE ==== ", teste);
+    if (isAuthenticated()) {
+      history.push("/dashboard");
+    }
   });
 
   return (
