@@ -1,27 +1,29 @@
 import React from "react";
-
+import { logout } from "../../services/Auth";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function Dashboard() {
+  let history = useHistory();
   const {
-    userLoged: { user, permission }
+    UserReducer: { userLoged, permission }
   } = useSelector(state => state);
 
-  console.log(user);
+  console.log(userLoged);
   console.log(permission);
   return (
     <div>
       <h1>OLA!</h1>
-      <p>Bem vindo: {user.name} times!</p>
+      <p>Bem vindo: {userLoged.name} times!</p>
       <br />
-      <p>email: {user.email}</p> *
+      <p>email: {userLoged.email}</p> *
       <button
         onClick={() => {
-          // dispatch(actions.incrementAsync);
-          // dispatch(actions.testeAsync);
+          logout();
+          history.push("/login");
         }}
       >
-        Incremento asincrono
+        Logout
       </button>
       <hr></hr>
       DASHBOARD
