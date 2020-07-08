@@ -13,6 +13,8 @@
     "apollo-boost": "^0.4.9",
     "apollo-client-preset": "^1.0.8",
     "axios": "^0.19.2",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
     "formik": "^2.1.4",
     "formik-material-ui": "^2.0.0-beta.1",
     "formik-material-ui-pickers": "^0.0.8",

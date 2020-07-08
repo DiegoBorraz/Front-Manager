@@ -3,13 +3,14 @@ import { types } from "../actions/types";
 import { actionLogin } from "../actions/UserActions";
 import { login } from "../../services/User";
 import { login as loginToken } from "../../services/Auth";
+import { decryptJSON } from "../../services/hash";
 
 function* loginAsync(params) {
-  console.log("PARAMETROS == ", params);
   try {
-    const response = yield call(login, params.payload);
-    loginToken(response.data.token);
-    yield put(actionLogin(response.data));
+    let response = yield call(login, params.payload);
+    response = yield decryptJSON(response.data);
+    loginToken(response.token);
+    yield put(actionLogin(response));
   } catch (error) {
     console.error("error == ", error.response.data);
   }
