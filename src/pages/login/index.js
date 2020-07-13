@@ -90,8 +90,8 @@ const Login = () => {
 
 const useStyles = makeStyles({
   form: {
-    marginTop: "10%",
-    width: 300
+    // marginTop: "10%",
+    // width: 300
   },
   textField: {
     marginBottom: 5

@@ -1,40 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { logout } from "../../services/Auth";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { encryptJSON, decryptJSON } from "../../services/hash";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import { isAuthenticated } from "../../services/Auth";
 
-const teste = {
-  nome: "Diego",
-  sobrenome: "Borraz de Avila"
-};
-export default function Dashboard() {
-  const [state, setState] = useState("");
-  const {
-    UserReducer: { userLoged, permission }
-  } = useSelector(state => state);
-  const batata = useSelector(state => state);
-  let history = useHistory();
+export default function Dashboard({ children }) {
+  const styles = useStyles();
+  const [logged, setLogged] = useState(false);
+  useEffect(() => {
+    setLogged(isAuthenticated());
+  });
 
-  console.log("STATE === ", batata);
-  // console.log(userLoged);
-  console.log(permission);
-  return (
-    <div>
-      <h1>OLA!</h1>
-      <p>Bem vindo: {userLoged.name} times!</p>
-      <br />
-      <p>email: {userLoged.email}</p> *
-      <button
-        onClick={() => {
-          logout();
-          history.push("/login");
-        }}
-      >
-        Logout
-      </button>
-      <hr></hr>
-      DASHBOARD
-    </div>
-  );
+  if (logged) {
+    return (
+      <div>
+        <Grid container direction="row" justify="flex-start" alignItems="stretch">
+          <Grid item xs={12} className={styles.Header}>
+            Header
+          </Grid>
+          <Grid container className={styles.Body}>
+            <Grid item xs={2} className={styles.Menu}>
+              Menu
+            </Grid>
+            <Grid item xs={10} className={styles.Content}>
+              {children}
+            </Grid>
+          </Grid>
+          <Grid item xs={12} className={styles.Footer}>
+            Footer
+          </Grid>
+        </Grid>
+      </div>
+    );
+  } else {
+    return <div>{children}</div>;
+  }
 }
+
+const useStyles = makeStyles({
+  Father: {
+    width: "100vh",
+    height: "100vh"
+  },
+  Header: {
+    backgroundColor: "#1C1C1C",
+    height: "10vh"
+  },
+  Menu: {
+    backgroundColor: "#0101DF",
+    height: "100%"
+  },
+  Content: {
+    backgroundColor: "#5F4C0B",
+    height: "100%"
+  },
+  Body: {
+    backgroundColor: "#FF4000",
+    height: "80vh"
+  },
+  Footer: {
+    backgroundColor: "#21610B",
+    height: "10vh"
+  }
+});
