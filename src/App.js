@@ -8,19 +8,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 function App() {
-  console.log(isAuthenticated());
-
-  return (
-    <Provider store={store}>
-      <Dashboard>
-        <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
-        </PersistGate>
-      </Dashboard>
-    </Provider>
-  );
+  return <Routes />;
 }
 
 export default App;

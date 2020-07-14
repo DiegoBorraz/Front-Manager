@@ -22,12 +22,18 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const Routes = () => (
-  <Switch>
-    <Route exact path="/" component={Login} />
-    <Route exact path="/login" component={Login} />
-    <Route path="/register" component={Register} />
-    <PrivateRoute exact path="/dashboard" component={() => <h1>LOGADO</h1>} />
-  </Switch>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Redirect from="/" to="/dashboard" />
+        </Switch>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
 );
 
 export default Routes;
